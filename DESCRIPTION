@@ -15,5 +15,6 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports:
-  ggplot2
+  ggplot2,
+  methods
 Config/testthat/edition: 3
