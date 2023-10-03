@@ -1,0 +1,110 @@
+---
+title: "IntroLR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{IntroLR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction to Linear Regression Modeling with lrmodels
+## Overview
+
+The lrmodels package provides a straightforward way to perform linear regression modeling in R. This vignette introduces the linreg class, a core component of the lrmodels package, which allows you to build and analyze linear regression models easily.
+
+Linreg Class
+The linreg class represents a simple linear regression model. It is equipped with various methods for fitting a linear regression model, analyzing model results, and making predictions.
+
+### Key Features
+- **Formula Specification:** You can specify the regression formula using a formula object, making it intuitive to define the relationship between dependent and independent variables.
+
+- **Model Fit:** The linreg class calculates regression coefficients using ordinary least squares (OLS), providing estimates of the parameters in the linear regression equation.
+
+- **Diagnostic Tools:** You can easily access diagnostic tools such as residuals, fitted values, coefficients, and more to assess the models performance.
+
+- **Visualization:** The package includes visualization methods to help you explore your model visually, including residual plots and scale-location plots.
+
+## Getting Started
+To get started with the linreg class, follow these steps:
+
+Load the lrmodels package using library(lrmodels).
+
+### Load the lrmodels package
+library(lrmodels)
+
+Create an instance of the linreg class with your desired formula and dataset.
+
+### Example: Creating a linear regression model
+my_linreg <- linreg(formula = Petal.Length ~ Species, data = iris)
+Use the available methods to analyze and visualize your model, make predictions, and access model details.
+
+Example Usage
+Lets explore a simple example using the Iris dataset. We will create a linreg model to predict petal length based on the species of iris flowers.
+
+
+### Example: Creating a linear regression model
+library(lrmodels)
+data(iris)
+model <- linreg$new(formula = Petal.Length ~ Species, data = iris)
+
+### Print the model coefficients
+print(model)
+
+### Plot the model: Residuals vs. Fitted Values and Scale-Location Plot
+plot(model)
+
+### Get residuals
+residuals <- resid(model)
+
+### Get predicted values
+predictions <- pred(model)
+
+### Get coefficients
+coefficients <- coef(model)
+
+### Summarize the model
+summary_info <- summary(model)
+## Conclusion
+The lrmodels package simplifies linear regression modeling in R, making it accessible to users of all skill levels. The linreg class, as introduced in this vignette, provides a convenient and versatile tool for linear regression analysis.
+
+
+
+@name{linreg}
+@exportClass linreg
+@slot call The formula used for the regression model.
+@slot coefficients A named vector of regression coefficients.
+
+@examples
+\dontrun{
+
+Create a linreg object
+my_linreg <- linreg(Petal.Length ~ Species, data = iris)
+
+Print the linreg object
+print(my_linreg)
+
+Plot the linreg object
+plot(my_linreg)
+
+Get residuals
+residuals <- resid(my_linreg)
+
+Get predicted values
+predictions <- pred(my_linreg)
+
+Get coefficients
+coefficients <- coef(my_linreg)
+
+Summarize the linreg object
+summary_info <- summary(my_linreg)
+
+
+@rdname linreg
+@export
