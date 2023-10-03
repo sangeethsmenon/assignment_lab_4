@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2023-10-01
 Author: Priya Patil and Sangeeth Menon
 Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
+Description: LR models and finding coefficients
 License: What license is it under?
 RoxygenNote: 7.2.3
 Encoding: UTF-8
