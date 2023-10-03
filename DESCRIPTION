@@ -14,4 +14,6 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Imports:
+  ggplot2
 Config/testthat/edition: 3
