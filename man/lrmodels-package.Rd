@@ -29,7 +29,7 @@ Maintainer: \packageMaintainer{lrmodels}
 \keyword{ package }
 \seealso{
 ~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
+~~ \code{\link[lrmodels:lrmodels-package]{lrmodels}} ~~
 }
 \examples{
 ~~ simple examples of the most important functions ~~

@@ -5,8 +5,9 @@ Version: 1.0
 Date: 2023-10-01
 Author: Priya Patil and Sangeeth Menon
 Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: LR models and finding coefficients
-License: What license is it under?
+Description: LR models and finding coefficients and 
+provides a set of tools for linear regression modeling and analysis. It includes functions for model fitting, summary statistics, visualization, and diagnostic plots.
+License: GPL-3
 RoxygenNote: 7.2.3
 Encoding: UTF-8
 Suggests: 
