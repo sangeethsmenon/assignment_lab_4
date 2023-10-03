@@ -19,14 +19,14 @@ This documentation provides a comprehensive description of the Iris dataset, inc
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+  The iris dataset is a famous dataset in the field of statistics and machine learning.
+  It contains measurements of sepal and petal length and width for three species of iris flowers: setosa, versicolor, and virginica.
+
+  The dataset is often used as a benchmark for classification and clustering algorithms.
+  Researchers and data scientists use it to demonstrate various data analysis and visualization techniques.
+
 }
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
+
 \examples{
 data(iris)
 ## maybe str(iris) ; plot(iris) ...

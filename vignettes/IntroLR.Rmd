@@ -74,37 +74,32 @@ summary_info <- summary(model)
 ## Conclusion
 The lrmodels package simplifies linear regression modeling in R, making it accessible to users of all skill levels. The linreg class, as introduced in this vignette, provides a convenient and versatile tool for linear regression analysis.
 
-
-
 @name{linreg}
 @exportClass linreg
 @slot call The formula used for the regression model.
 @slot coefficients A named vector of regression coefficients.
 
 @examples
-\dontrun{
-
-Create a linreg object
+# Create a linreg object
 my_linreg <- linreg(Petal.Length ~ Species, data = iris)
 
-Print the linreg object
+# Print the linreg object
 print(my_linreg)
 
-Plot the linreg object
+# Plot the linreg object
 plot(my_linreg)
 
-Get residuals
+# Get residuals
 residuals <- resid(my_linreg)
 
-Get predicted values
+# Get predicted values
 predictions <- pred(my_linreg)
 
-Get coefficients
+# Get coefficients
 coefficients <- coef(my_linreg)
 
-Summarize the linreg object
+# Summarize the linreg object
 summary_info <- summary(my_linreg)
-
 
 @rdname linreg
 @export
