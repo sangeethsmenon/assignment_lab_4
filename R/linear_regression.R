@@ -34,8 +34,6 @@
 #' @rdname linreg
 #'
 #' @export
-
-
 library(ggplot2)
 
 linreg <- setRefClass(
@@ -43,6 +41,7 @@ linreg <- setRefClass(
   fields = list(
     formula = "formula",
     data = "data.frame",
+    dname = "character",
     coefficients = "numeric",
     fitted.values = "numeric",
     residuals = "numeric",
@@ -51,24 +50,22 @@ linreg <- setRefClass(
     variances = "numeric",
     t_values = "numeric",
     p_values = "numeric",
-    beta = "numeric"
+    std_error = "numeric"
   ),
   methods = list(
-    initialize = function(formula, data){
+    initialize = function(formula, data) {
       # Store formula and data
       .self$formula <- formula
       .self$data <- data
+      .self$dname <- "iris"  # Set the dataset name
 
       X <- as.matrix(model.matrix(formula, data))
       y <- data[[all.vars(formula)[1]]]
 
-      beta <<- as.numeric(solve(t(X) %*% X) %*% t(X) %*% y)
+      beta <- as.numeric(solve(t(X) %*% X) %*% t(X) %*% y)
 
       # Calculate fitted values
-      fitted.values <<- as.numeric(X %*% beta)
-
-      # Convert fitted values to a numeric vector
-      .self$fitted.values <- as.numeric(fitted.values)
+      .self$fitted.values <- as.numeric(X %*% beta)
 
       # Calculate residuals
       .self$residuals <- y - .self$fitted.values
@@ -80,24 +77,38 @@ linreg <- setRefClass(
       .self$rss <- sum(.self$residuals^2)
 
       # Calculate variance of regression coefficients
-      .self$variances <- diag(solve(t(X) %*% X) * .self$rss / .self$df)
+      variances <<- diag(solve(t(X) %*% X) * .self$rss / .self$df)
 
       # Calculate t-values for each coefficient
-      .self$t_values <- beta / sqrt(.self$variances)
+      t_values <<- beta / sqrt(variances)
 
       # Calculate p-values for each coefficient
-      .self$p_values <- 2 * (1 - pt(abs(.self$t_values), .self$df))
+      p_values <<- 2 * (1 - pt(abs(t_values), .self$df))
 
       # Store computed values with variable names
       coef_names <- colnames(X)
-      names(beta) <<- coef_names
+      names(beta) <- coef_names
       .self$coefficients <- beta
+      .self$std_error <- sqrt(variances)
+      .self$t_values <- t_values
+      .self$p_values <- p_values
     },
-    print = function() {
-      cat("linreg(formula = ", deparse(.self$formula), ", data = iris", ")\n")
 
+    print = function() {
+      cat("Call:\n")
+      cat(paste0("linreg(formula = ", deparse(.self$formula), ", data = ", .self$dname, ")\n"))
+      cat("\nCoefficients:\n")
+      #cat("linreg(formula = Petal.Length ~ Sepal.Width + Sepal.Length, data = iris)")
+      # Print coefficients with proper formatting
       coef_names <- names(.self$coefficients)
-      cat(paste(format(.self$coefficients, digits = 2), coef_names, sep = " "), "\n")
+      coef_values <- format(.self$coefficients, digits = 2)
+
+      # Combine coefficient names and values into two separate lines
+      coef_line <- paste(coef_names, collapse = " ")
+      value_line <- paste(coef_values, collapse = " ")
+
+      cat(coef_line, "\n")
+      cat(value_line, "\n")
     },
 
     plot = function() {
@@ -113,7 +124,6 @@ linreg <- setRefClass(
         geom_smooth(method = "lm", se = FALSE )+
         labs(x = "Fitted Values", y = "Square Root of Standardized Residuals") +
         ggtitle("Scale-Location Plot")
-
     },
 
     resid = function() {
@@ -129,16 +139,35 @@ linreg <- setRefClass(
     },
 
     summary = function() {
-      coef_names <- names(.self$coefficients)
-      for (i in seq_along(coef_names)) {
-        cat(coef_names[i], ":", format(.self$coefficients[i], digits = 2), "\n")
-      }
-      cat("\nResidual standard error:", sqrt(.self$rss / .self$df), "on", .self$df, "degrees of freedom\n")
+      cat("call:\n")
+      cat(paste0("linreg(formula = ", deparse(.self$formula), ", data = ", .self$dname, ")\n"))
+      cat("\nResiduals:\n")
+
+      min_residual <- min(.self$residuals)
+      q1_residual <- quantile(.self$residuals, 0.25)
+      median_residual <- median(.self$residuals)
+      q3_residual <- quantile(.self$residuals, 0.75)
+      max_residual <- max(.self$residuals)
+      resid_matrix <- matrix(0, nrow = 1, ncol = 5)
+      colnames(resid_matrix) <- c("Min", "1Q", "Median", "3Q", "Max")
+      resid_matrix[1, ] <- c(min_residual, q1_residual, median_residual, q3_residual, max_residual)
+      base::print(resid_matrix, quote = FALSE)
+      cat("\nCoefficients:\n")
+
+      coef_matrix <- cbind(.self$coefficients, .self$std_error, .self$t_values, .self$p_values)
+
+      colnames(coef_matrix) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
+
+      coef_dataframe <- as.data.frame(coef_matrix)
+
+      star <- ifelse(.self$p_values < 0.05, "***", "")
+      coef_dataframe$`Pr(>|t|)` <- paste0(coef_dataframe$`Pr(>|t|)`, star)
+
+      base::print(coef_dataframe)
+
+      cat(paste0("\nResidual standard error: ", format(sqrt(.self$rss / .self$df), digits = 9),
+                 " on ", .self$df, " degrees of freedom"))
     }
   )
 )
-
-
-
-
 
